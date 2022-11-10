@@ -15,7 +15,7 @@
 	<click-counter></click-counter>
 	<click-counter></click-counter>
 	<click-counter></click-counter>
-	<plan v-for="plan in plans" :name="plan"></plan>
+	<plan-picker></plan-picker>
 </div>
 
 <script type="text/x-template" id="click-counter-template">
@@ -31,6 +31,12 @@
 		</span>
 </script>
 
+<script type="text/x-template" id="plan-picker-template">
+	<div>
+		<plan v-for="plan in plans" :name="plan"></plan>
+	</div>
+</script>
+
 <script>
   Vue.component('click-counter', {
     template: '#click-counter-template',
@@ -40,6 +46,16 @@
       };
     }
   });
+
+  Vue.component('plan-picker', {
+    template: '#plan-picker-template',
+    data() {
+      return {
+        plans: ['The Latte', 'The Mocha', 'The Milk', '']
+      };
+    }
+  });
+
   Vue.component('plan', {
     template: '#plan-template',
     props: {
@@ -54,9 +70,6 @@
 
   new Vue({
     el: '#app',
-    data: {
-      plans: ['The Latte', 'The Mocha', 'The Milk', '']
-    }
   });
 </script>
 </body>
