@@ -6,6 +6,11 @@
 		Shopping List
 	</title>
 	<script src="https://unpkg.com/vue@2"></script>
+	<style>
+      .active-plan {
+          color: deeppink;
+      }
+	</style>
 </head>
 <body>
 <div id="app">
@@ -26,14 +31,14 @@
 </script>
 
 <script type="text/x-template" id="plan-template">
-	<span>
-			{{ name }}
-		</span>
+	<div @click="select" :class="{'active-plan' : isSelected}">
+		<span>{{ name }}</span>
+	</div>
 </script>
 
 <script type="text/x-template" id="plan-picker-template">
 	<div>
-		<plan v-for="plan in plans" :name="plan"></plan>
+		<plan v-for="plan in plans" :name="plan" :selected-plan="selectedPlan" @select="selectPlan"></plan>
 	</div>
 </script>
 
@@ -46,18 +51,6 @@
       };
     }
   });
-
-  const PlanComponent = {
-    template: '#plan-template',
-    props: {
-      name: {
-        type: String,
-        default: 'Nothing',
-        required: true,
-      },
-      price: Number
-    }
-  };
 
   // Plan is local component only can used in picker
   // Vue.component('plan-picker', {
@@ -84,6 +77,32 @@
   //   }
   // });
 
+  const PlanComponent = {
+    template: '#plan-template',
+    props: {
+      name: {
+        type: String,
+        default: 'Nothing',
+        required: true,
+      },
+      price: Number,
+      selectedPlan: {
+        type: String
+      }
+    },
+    computed: {
+      isSelected() {
+        return this.name === this.selectedPlan;
+      }
+    },
+    methods: {
+      select() {
+        this.$emit('select', this.name);
+        this.selected = true;
+      }
+    }
+  };
+
   // define plan picker in global
 
   const PlanPickerComponent = {
@@ -93,8 +112,14 @@
     },
     data() {
       return {
-        plans: ['The Latte', 'The Mocha', 'The Milk', '']
+        plans: ['The Latte', 'The Mocha', 'The Milk', ''],
+        selectedPlan: null,
       };
+    },
+    methods: {
+      selectPlan(plan) {
+        this.selectedPlan = plan;
+      }
     }
   };
 
