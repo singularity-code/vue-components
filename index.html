@@ -15,18 +15,48 @@
 	<click-counter></click-counter>
 	<click-counter></click-counter>
 	<click-counter></click-counter>
+	<plan v-for="plan in plans" :name="plan"></plan>
 </div>
+
+<script type="text/x-template" id="click-counter-template">
+	<div>
+		<p>Counter: </p>
+		<button @click="count++">{{count}}</button>
+	</div>
+</script>
+
+<script type="text/x-template" id="plan-template">
+	<span>
+			{{ name }}
+		</span>
+</script>
+
 <script>
   Vue.component('click-counter', {
-    template: '<button @click="count++">{{count}}</button>',
+    template: '#click-counter-template',
     data() {
       return {
         count: 0
       };
     }
   });
+  Vue.component('plan', {
+    template: '#plan-template',
+    props: {
+      name: {
+        type: String,
+        default: 'Nothing',
+        required: true,
+      },
+      price: Number
+    }
+  });
+
   new Vue({
     el: '#app',
+    data: {
+      plans: ['The Latte', 'The Mocha', 'The Milk', '']
+    }
   });
 </script>
 </body>
